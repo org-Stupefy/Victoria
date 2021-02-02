@@ -64,3 +64,41 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get update
+          sudo apt install build-essential
+          sudo apt install mingw-w64
+
+      - name: Generating Dependencies
+        shell: cmd
+        run: |
+          cd scripts
+          .\Linux-GenProjects.sh
+
+      # - name: Building Glad
+      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/Glad/Glad.vcxproj /p:Platform=x64 /p:Configuration=Release'
+
+      # - name: Building GLFW
+      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/GLFW/GLFW.vcxproj /p:Platform=x64 /p:Configuration=Release'
+
+      # - name: Building ImGui
+      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/imgui/ImGui.vcxproj /p:Platform=x64 /p:Configuration=Release'
+
+      # - name: Building Yaml-Cpp
+      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/yaml-cpp/yaml-cpp.vcxproj /p:Platform=x64 /p:Configuration=Release'
+
+      # - name: Building Victoria
+      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria.vcxproj /p:Platform=x64 /p:Configuration=Release'
+
+      - name: Building Sandbox
+        run: '"%MSBUILD_PATH%\MSBuild.exe" Sandbox/Sandbox.vcxproj /p:Platform=x64 /p:Configuration=Release'
+
+  # MacOS:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 1
+  #         submodules: true
+
+  #     - name: Install Dependencies
+  #       run: |
+  #         brew
