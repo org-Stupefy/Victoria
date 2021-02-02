@@ -1,0 +1,14 @@
+# Binaries
+**/bin/
+!thirdparty/premake/bin/
+bin-int/
+
+# Victoria files
+*.log
+
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
