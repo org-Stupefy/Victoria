@@ -69,10 +69,8 @@ jobs:
           sudo apt install gcc g++ make -y
 
       - name: Generating Dependencies
-        shell: cmd
         run: |
-          cd scripts
-          sh Linux-GenProjects.sh out
+          sh ./scripts/Linux-GenProjects.sh
 
       # - name: Building Glad
       #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/Glad/Glad.vcxproj /p:Platform=x64 /p:Configuration=Release'
