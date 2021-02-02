@@ -93,7 +93,7 @@ jobs:
       #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria.vcxproj /p:Platform=x64 /p:Configuration=Release'
 
       - name: Building Sandbox
-        run: make config=Release'
+        run: make config=Release
 
   # MacOS:
   #   runs-on: macos-latest
