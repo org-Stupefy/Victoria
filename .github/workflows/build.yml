@@ -32,12 +32,12 @@ jobs:
       #       (Get-Content $_.FullName) -Replace "<WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>","<WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>" | Set-Content -Path $_.FullName
       #     }
 
-      # - name: Generating Dependencies
-      #   shell: cmd
-      #   run: |
-      #     cd scripts
-      #     call "%VS_PATH%\VC\Auxiliary\Build\vcvars64.bat"
-      #     .\Win-GenProjects.bat /W4
+      - name: Generating Dependencies
+        shell: cmd
+        run: |
+          cd scripts
+          call "%VS_PATH%\VC\Auxiliary\Build\vcvars64.bat"
+          .\Win-GenProjects.bat /W4
 
       # - name: Building Glad
       #   shell: cmd
