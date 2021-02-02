@@ -67,6 +67,11 @@ jobs:
           sudo apt install build-essential
           sudo apt install mingw-w64
           sudo apt install gcc g++ make -y
+          sudo apt install libxcursor-dev -y
+          sudo apt-get install libx11-dev -y
+          sudo apt-get install libxi-dev -y
+          sudo apt-get install libxrandr-dev -y
+          sudo apt-get install libxinerama1 libxinerama-dev -y
 
       - name: Generating Dependencies
         run: |

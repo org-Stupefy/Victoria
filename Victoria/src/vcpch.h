@@ -29,3 +29,8 @@
 #ifdef VC_PLATFORM_WINDOWS
 #include <Windows.h>
 #endif
+
+#ifdef VC_PLATFORM_LINUX
+#include <pthread.h>
+#include <unistd.h>
+#endif

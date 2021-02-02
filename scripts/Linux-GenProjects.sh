@@ -1,6 +1,8 @@
 #!/bin/bash
-cd thirdparty/premake/bin
-tar -xvzf premake5linux.tar.gz
-premake5linux gmake2
+# cd thirdparty/premake/bin
+# tar -xvzf premake-5.0.0-alpha15-linux.tar.gz
+# ./premake5 gmake2 
 
-
+tar -xvzf thirdparty/premake/bin/premake-5.0.0-alpha15-linux.tar.gz
+./thirdparty/premake/bin/premake5 gmake2
+make config=release
