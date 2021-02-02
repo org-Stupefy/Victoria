@@ -66,12 +66,13 @@ jobs:
           sudo apt-get update
           sudo apt install build-essential
           sudo apt install mingw-w64
+          sudo apt install gcc g++ make -y
 
       - name: Generating Dependencies
         shell: cmd
         run: |
           cd scripts
-          .\Linux-GenProjects.sh
+          sh Linux-GenProjects.sh out
 
       # - name: Building Glad
       #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/Glad/Glad.vcxproj /p:Platform=x64 /p:Configuration=Release'
