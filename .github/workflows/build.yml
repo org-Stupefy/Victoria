@@ -61,4 +61,4 @@ jobs:
 
       - name: Building Sandbox
         shell: cmd
-        run: '"%MSBUILD_PATH%\MSBuild.exe" Sandbox/Sandbox.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+        run: '"%MSBUILD_PATH%\MSBuild.exe" Sandbox/Sandbox.vcxproj /p:Platform=x64 /p:Configuration=Release'
