@@ -32,33 +32,33 @@ jobs:
       #       (Get-Content $_.FullName) -Replace "<WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>","<WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>" | Set-Content -Path $_.FullName
       #     }
 
-      - name: Generating Dependencies
-        shell: cmd
-        run: |
-          cd scripts
-          call "%VS_PATH%\VC\Auxiliary\Build\vcvars64.bat"
-          .\Win-GenProjects.bat /W4
+      # - name: Generating Dependencies
+      #   shell: cmd
+      #   run: |
+      #     cd scripts
+      #     call "%VS_PATH%\VC\Auxiliary\Build\vcvars64.bat"
+      #     .\Win-GenProjects.bat /W4
 
-      - name: Building Glad
-        shell: cmd
-        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/Glad/Glad.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+      # - name: Building Glad
+      #   shell: cmd
+      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/Glad/Glad.vcxproj /p:Platform=Win32 /p:Configuration=Release'
 
-      - name: Building GLFW
-        shell: cmd
-        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/GLFW/GLFW.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+      # - name: Building GLFW
+      #   shell: cmd
+      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/GLFW/GLFW.vcxproj /p:Platform=Win32 /p:Configuration=Release'
 
-      - name: Building ImGui
-        shell: cmd
-        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria/thirdparty/imgui/ImGui.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+      # - name: Building ImGui
+      #   shell: cmd
+      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria/thirdparty/imgui/ImGui.vcxproj /p:Platform=Win32 /p:Configuration=Release'
 
-      - name: Building Yaml-Cpp
-        shell: cmd
-        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria/thirdparty/yaml-cpp/yaml-cpp.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+      # - name: Building Yaml-Cpp
+      #   shell: cmd
+      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria/thirdparty/yaml-cpp/yaml-cpp.vcxproj /p:Platform=Win32 /p:Configuration=Release'
 
-      - name: Building Victoria
-        shell: cmd
-        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria/Victoria.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+      # - name: Building Victoria
+      #   shell: cmd
+      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria/Victoria.vcxproj /p:Platform=Win32 /p:Configuration=Release'
 
       - name: Building Sandbox
         shell: cmd
-        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Sandbox/Sandbox.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+        run: '"%MSBUILD_PATH%\MSBuild.exe" Sandbox/Sandbox.sln /p:Platform=Win32 /p:Configuration=Release'
