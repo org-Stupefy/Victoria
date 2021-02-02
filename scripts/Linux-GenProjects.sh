@@ -1,4 +1,6 @@
-@echo off
-pushd %~dp0\..\
-call thirdparty\premake\bin\premake5linux.tar.gz gmake2
-PAUSE
+#!/bin/bash
+cd thirdparty\premake\bin
+tar -xvzf premake5linux.tar.gz
+premake5linux gmake2
+
+
