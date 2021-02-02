@@ -22,16 +22,6 @@ jobs:
       #     Invoke-WebRequest -Uri "https://github.com/org-Stupefy/Victoria/tree/master/thirdparty/premake/bin/premake5.exe" -OutFile premake5.exe
       #     Expand-Archive -Path premake5.exe
 
-      # - name: Fix Projects
-      #   shell: powershell
-      #   run: |
-      #     gci -recurse -filter "*.vcxproj" | ForEach-Object {
-      #       (Get-Content $_.FullName) -Replace "<PlatformToolset>v110</PlatformToolset>","<PlatformToolset>v142</PlatformToolset>" | Set-Content -Path $_.FullName
-      #       (Get-Content $_.FullName) -Replace "<WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>","<WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>" | Set-Content -Path $_.FullName
-      #       (Get-Content $_.FullName) -Replace "<PlatformToolset>v140</PlatformToolset>","<PlatformToolset>v142</PlatformToolset>" | Set-Content -Path $_.FullName
-      #       (Get-Content $_.FullName) -Replace "<WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>","<WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>" | Set-Content -Path $_.FullName
-      #     }
-
       - name: Generating Dependencies
         shell: cmd
         run: |
@@ -39,26 +29,69 @@ jobs:
           call "%VS_PATH%\VC\Auxiliary\Build\vcvars64.bat"
           .\Win-GenProjects.bat /W4
 
-      # - name: Building Glad
-      #   shell: cmd
-      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/Glad/Glad.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+      - name: Building Glad
+        shell: cmd
+        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/Glad/Glad.vcxproj /p:Platform=x64 /p:Configuration=Release'
 
-      # - name: Building GLFW
-      #   shell: cmd
-      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/GLFW/GLFW.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+      - name: Building GLFW
+        shell: cmd
+        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/GLFW/GLFW.vcxproj /p:Platform=x64 /p:Configuration=Release'
 
-      # - name: Building ImGui
-      #   shell: cmd
-      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria/thirdparty/imgui/ImGui.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+      - name: Building ImGui
+        shell: cmd
+        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/imgui/ImGui.vcxproj /p:Platform=x64 /p:Configuration=Release'
 
-      # - name: Building Yaml-Cpp
-      #   shell: cmd
-      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria/thirdparty/yaml-cpp/yaml-cpp.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+      - name: Building Yaml-Cpp
+        shell: cmd
+        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/yaml-cpp/yaml-cpp.vcxproj /p:Platform=x64 /p:Configuration=Release'
 
-      # - name: Building Victoria
-      #   shell: cmd
-      #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria/Victoria.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+      - name: Building Victoria
+        shell: cmd
+        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria.vcxproj /p:Platform=x64 /p:Configuration=Release'
 
       - name: Building Sandbox
         shell: cmd
         run: '"%MSBUILD_PATH%\MSBuild.exe" Sandbox/Sandbox.vcxproj /p:Platform=x64 /p:Configuration=Release'
+
+  Linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          submodules: true
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+
+  Discord-CI:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [Windows]
+    steps:
+    - uses: victoria/github_discord_notifier@latest
+      with:
+        discord-webhook: ${{ secrets.DISCORD_CI_WEBHOOK }}
+        github-token: ${{ github.token }}
+        action-task: discord-jobs
+        discord-filter: "'{{ github.branch }}'.match(/master/g) != null && '{{ run.conclusion }}' != '{{ last_run.conclusion }}'"
+        discord-username: GitHub Actions
+        discord-job-new-failure-message: ''
+        discord-job-fixed-failure-message: ''
+        discord-job-new-failure-embed: |
+          {
+            "title": "`{{ job.name }}` job is failing on `{{ github.branch }}`!",
+            "description": "Commit [{{ github.context.payload.head_commit.title }}]({{ github.context.payload.head_commit.url }}) pushed to [{{ github.branch }}]({{ github.branch_url }}) broke [{{ job.name }}]({{ job.url }}) build job.\nFailing steps: {{ failing_steps }}",
+            "url": "{{ job.url }}",
+            "color": "0xFF0000",
+            "timestamp": "{{ run.updated_at }}"
+          }
+        discord-job-fixed-failure-embed: |
+          {
+            "title": "`{{ github.branch }}` branch is no longer failing!",
+            "description": "Build failures were fixed on [{{ github.branch }}]({{ github.branch_url }}) branch.",
+            "color": "0x00FF00",
+            "url": "{{ github.context.payload.head_commit.url }}",
+            "timestamp": "{{ run.completed_at }}"
+          }
