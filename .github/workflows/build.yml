@@ -41,11 +41,11 @@ jobs:
 
       - name: Building Glad
         shell: cmd
-        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/Glad/Glad.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/Glad/Glad.vcxproj'
 
       - name: Building GLFW
         shell: cmd
-        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/Victoria/thirdparty/GLFW/GLFW.vcxproj /p:Platform=Win32 /p:Configuration=Release'
+        run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/GLFW/GLFW.vcxproj /p:Platform=Win32 /p:Configuration=Release'
 
       - name: Building ImGui
         shell: cmd
