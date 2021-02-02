@@ -1,0 +1,3 @@
+[submodule "Victoria/thirdparty/spdlog"]
+	path = Victoria/thirdparty/spdlog
+	url = https://github.com/gabime/spdlog
