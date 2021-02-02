@@ -11,9 +11,10 @@ jobs:
       VS_PATH: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\
       MSBUILD_PATH: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 1
+          submodules: true
 
       # - name: Install Dependencies
       #   shell: powershell
