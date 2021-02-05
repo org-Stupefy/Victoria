@@ -5,9 +5,12 @@
 
 namespace Victoria
 {
-    class Torus
+    class Cone
     {
     public:
+        Cone();
+        Cone(int precision);
+
     private:
     };
 } // namespace Victoria

@@ -9,6 +9,10 @@
 #include "Victoria/Core/Log.h"
 #include "Victoria/Core/Assert.h"
 
+#include "Victoria/Math/Cone.h"
+#include "Victoria/Math/Sphere.h"
+#include "Victoria/Math/Torus.h"
+
 // #include "Victoria/Core/Timestep.h"
 
 // #include "Victoria/Core/Input.h"
@@ -23,7 +27,7 @@
 // #include "Victoria/Scene/ScriptableEntity.h"
 // #include "Victoria/Scene/Components.h"
 
-// // ---Renderer------------------------
+// ---Renderer------------------------
 // #include "Victoria/Renderer/Renderer.h"
 // #include "Victoria/Renderer/Renderer2D.h"
 // #include "Victoria/Renderer/RenderCommand.h"
@@ -35,4 +39,4 @@
 // #include "Victoria/Renderer/VertexArray.h"
 
 // #include "Victoria/Renderer/OrthographicCamera.h"
-// // -----------------------------------
+// -----------------------------------

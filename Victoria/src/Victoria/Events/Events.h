@@ -2,5 +2,8 @@
 
 namespace Victoria
 {
+    class Event
+    {
+    };
 
 } // namespace Victoria
