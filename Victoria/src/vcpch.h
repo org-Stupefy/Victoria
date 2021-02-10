@@ -34,6 +34,7 @@
 #include "Victoria/Core/Base.h"
 
 #include "Victoria/Core/Log.h"
+#include "Victoria/Debug/Instrumentor.h"
 
 #ifdef VC_PLATFORM_WINDOWS
 #include <Windows.h>
