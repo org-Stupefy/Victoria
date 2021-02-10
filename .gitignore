@@ -5,6 +5,7 @@ bin-int/
 
 # Victoria files
 *.log
+*.json
 
 # Visual Studio files and folder
 .vs/
