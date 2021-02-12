@@ -22,7 +22,7 @@ namespace Victoria
         void Compile(const std::unordered_map<unsigned int, std::string> &shaderSources);
 
     private:
-        int m_RendererID;
+        uint32_t m_RendererID;
         std::string m_Name;
     };
 } // namespace Victoria
