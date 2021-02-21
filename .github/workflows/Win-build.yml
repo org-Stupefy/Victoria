@@ -1,7 +1,9 @@
 name: Win-build
 
 on:
-  push: {}
+  push:
+    tags:
+      - "v*"
   pull_request: {}
 
 jobs:
@@ -52,3 +54,18 @@ jobs:
       - name: Building Sandbox
         shell: cmd
         run: '"%MSBUILD_PATH%\MSBuild.exe" Sandbox/Sandbox.vcxproj /p:Platform=x64 /p:Configuration=Release'
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
