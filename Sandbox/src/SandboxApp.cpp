@@ -1,19 +1,39 @@
 #include <Victoria.h>
 #include <Victoria/Core/EntryPoint.h>
 
-class SandBox : public Victoria::Application
+class ExampleLayer : public Victoria::Layer
 {
 public:
-	SandBox()
+	ExampleLayer()
+		: Layer("Example")
 	{
 	}
 
-	~SandBox()
+	void OnUpdate() override
+	{
+		VC_INFO("ExampleLayer::Update");
+	}
+
+	void OnEvent(Victoria::Event &event) override
+	{
+		VC_TRACE("{0}", event);
+	}
+};
+
+class Sandbox : public Victoria::Application
+{
+public:
+	Sandbox()
+	{
+		PushLayer(new ExampleLayer());
+	}
+
+	~Sandbox()
 	{
 	}
 };
 
 Victoria::Application *Victoria::CreateApplication()
 {
-	return new SandBox();
+	return new Sandbox();
 }
