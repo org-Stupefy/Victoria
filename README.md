@@ -1,7 +1,7 @@
 # Victoria 
 
 
-![Victoria](/Resources/Branding/Victoria_Logo.png?raw=true "Victoria")
+![Victoria](/Resources/Branding/Victoria-500.png?raw=true "Victoria")
 
 Victoria is primarily an early-stage interactive application and rendering engine for Windows. 
 

@@ -78,4 +78,4 @@ namespace Victoria
 		return os << e.ToString();
 	}
 
-} // namespace Victoria
+} 

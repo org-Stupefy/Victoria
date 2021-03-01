@@ -27,6 +27,6 @@ namespace Victoria
         void init(int);
         float toRadians(float degrees);
     };
-} // namespace Victoria
+} 
 
 //TODO: Reference taken from Computer Graphics Programming in OpenGL with C++ {Page 136}

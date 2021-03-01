@@ -204,7 +204,7 @@ namespace Victoria
             return result;
         }
     } // namespace InstrumentorUtils
-} // namespace Victoria
+} 
 
 #define VC_PROFILE 0
 #if VC_PROFILE

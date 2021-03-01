@@ -36,4 +36,4 @@ namespace Victoria
 
         static Window *Create(const WindowProperties &property = WindowProperties());
     };
-} // namespace Victoria
+} 

@@ -84,6 +84,6 @@ namespace Victoria
     {
         return normals;
     }
-} // namespace Victoria
+} 
 
 //TODO: Reference taken from Computer Graphics Programming in OpenGL with C++ {Page 136}

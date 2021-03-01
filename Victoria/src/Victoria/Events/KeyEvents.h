@@ -69,4 +69,4 @@ namespace Victoria
 
 		EVENT_CLASS_TYPE(KeyTyped)
 	};
-} // namespace Victoria
+} 

@@ -95,4 +95,4 @@ namespace Victoria
 
         EVENT_CLASS_TYPE(MouseButtonReleased)
     };
-} // namespace Victoria
+} 

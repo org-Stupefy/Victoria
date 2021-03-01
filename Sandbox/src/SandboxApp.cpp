@@ -1,6 +1,8 @@
 #include <Victoria.h>
 #include <Victoria/Core/EntryPoint.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public Victoria::Layer
 {
 public:
@@ -13,6 +15,14 @@ public:
 	{
 		VC_INFO("ExampleLayer::Update");
 	}
+
+	virtual void OnImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello World");
+		ImGui::End();
+	}
+
 
 	void OnEvent(Victoria::Event &event) override
 	{

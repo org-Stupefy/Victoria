@@ -24,4 +24,4 @@ namespace Victoria
 			ButtonMiddle = Button2
 		};
 	}
-} // namespace Victoria
+} 

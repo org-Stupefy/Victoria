@@ -7,4 +7,4 @@ namespace Victoria
     public:
     private:
     };
-} // namespace Victoria
+} 

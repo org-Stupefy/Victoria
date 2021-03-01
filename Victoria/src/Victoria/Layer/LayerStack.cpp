@@ -44,4 +44,4 @@ namespace Victoria
             m_Layers.erase(it);
         }
     }
-} // namespace Victoria
+} 

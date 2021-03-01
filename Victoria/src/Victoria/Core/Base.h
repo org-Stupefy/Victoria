@@ -44,7 +44,7 @@ namespace Victoria
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 
-} // namespace Victoria
+} 
 
 #include "Victoria/Core/Log.h"
 #include "Victoria/Core/Assert.h"

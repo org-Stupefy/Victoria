@@ -23,7 +23,7 @@ namespace Victoria
 		static Ref<spdlog::logger> s_ClientLogger;
 	};
 
-} // namespace Victoria
+} 
 
 // Core log macros
 #define VC_CORE_TRACE(...) ::Victoria::Log::GetCoreLogger()->trace(__VA_ARGS__)

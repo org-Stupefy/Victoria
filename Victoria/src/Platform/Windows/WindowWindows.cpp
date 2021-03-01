@@ -162,4 +162,4 @@ namespace Victoria
         return m_Data.VSync;
     }
 
-} // namespace Victoria
+} 

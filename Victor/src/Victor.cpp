@@ -15,4 +15,4 @@ namespace Victoria
     {
         return new Victor();
     }
-} // namespace Victoria
+} 
