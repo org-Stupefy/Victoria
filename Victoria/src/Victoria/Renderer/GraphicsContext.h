@@ -4,9 +4,10 @@
 
 namespace Victoria
 {
-    class Shader
-    {
-    public:
-    private:
-    };
-} 
+	class GraphicsContext
+	{
+	public:
+
+	private:
+	};
+}

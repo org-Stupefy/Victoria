@@ -1,5 +1,7 @@
 #include <Victoria.h>
-#include <Victoria/Core/EntryPoint.h>
+#include "Victoria/Core/EntryPoint.h"
+
+#include "EditorLayer.h"
 
 namespace Victoria
 {
@@ -7,8 +9,14 @@ namespace Victoria
     {
     public:
         Victor()
+			: Application("Victor")
         {
+			PushLayer(new EditorLayer());
         }
+
+		~Victor()
+		{
+		}
     };
 
     Application *CreateApplication()

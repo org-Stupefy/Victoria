@@ -1,6 +1,5 @@
 #include <Victoria.h>
-#include <Victoria/Core/EntryPoint.h>
-
+#include "Victoria/Core/EntryPoint.h"
 #include "imgui/imgui.h"
 
 class ExampleLayer : public Victoria::Layer

@@ -16,6 +16,7 @@ namespace Victoria
 
 		VC_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
+
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
@@ -72,7 +73,7 @@ namespace Victoria
 		{
 			VC_PROFILE_SCOPE("RunLoop");
 
-			glClearColor(.5, 0.5, .1, 1);
+			glClearColor(0.1f,0.1f,0.1f,1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			for (Layer* layer : m_LayerStack)

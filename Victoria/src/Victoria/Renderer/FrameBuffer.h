@@ -4,9 +4,7 @@
 
 namespace Victoria
 {
-    class Shader
-    {
-    public:
-    private:
-    };
-} 
+	struct FrameBufferSpecification
+	{
+	};
+}

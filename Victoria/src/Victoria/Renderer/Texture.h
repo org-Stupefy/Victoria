@@ -4,9 +4,8 @@
 
 namespace Victoria
 {
-    class Shader
-    {
-    public:
-    private:
-    };
-} 
+	class Texture
+	{
+
+	};
+}

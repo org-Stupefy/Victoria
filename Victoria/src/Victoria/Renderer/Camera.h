@@ -4,9 +4,11 @@
 
 namespace Victoria
 {
-    class Shader
-    {
-    public:
-    private:
-    };
-} 
+	class Camera
+	{
+	public:
+		Camera() = default;
+
+	public:
+	};
+}

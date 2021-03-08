@@ -2,7 +2,7 @@ include "./thirdparty/premake/premake_customization/solution_items.lua"
 
 workspace "Victoria"
 	architecture "x86_64"
-	startproject "Sandbox"
+	startproject "Victor"
 
 	configurations
 	{

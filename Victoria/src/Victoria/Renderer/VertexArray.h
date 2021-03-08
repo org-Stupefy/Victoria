@@ -4,9 +4,9 @@
 
 namespace Victoria
 {
-    class Shader
-    {
-    public:
-    private:
-    };
-} 
+	class VertexArray
+	{
+	public:
+		VertexArray() {}
+	};
+}

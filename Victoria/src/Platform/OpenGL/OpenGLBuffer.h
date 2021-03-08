@@ -1,8 +1,11 @@
 #pragma once
 
+#include "Victoria/Renderer/Buffer.h"
+#include <glad/glad.h>
+
 namespace Victoria
 {
-    class OpenGLVertexBuffer
+    class OpenGLVertexBuffer : public VertexBuffer
     {
 	public:
 		OpenGLVertexBuffer(uint32_t size);
