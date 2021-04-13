@@ -40,7 +40,8 @@ project "Victoria"
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.ImGuizmo}",
+		"$(VULKAN_SDK)/include"
 	}
 
 	links
@@ -49,7 +50,8 @@ project "Victoria"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
-		"opengl32.lib"
+		"opengl32.lib",
+		"$(VULKAN_SDK)/lib/vulkan-1.lib"
 	}
 
 	filter "files:thirdparty/ImGuizmo/**.cpp"

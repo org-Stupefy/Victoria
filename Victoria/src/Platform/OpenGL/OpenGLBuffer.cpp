@@ -60,6 +60,7 @@ namespace Victoria
 	/***************************************************************************/
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
+		:m_Count(count)
 	{
 		VC_PROFILE_FUNCTION();
 

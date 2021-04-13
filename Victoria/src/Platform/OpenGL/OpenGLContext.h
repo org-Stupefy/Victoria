@@ -1,19 +1,18 @@
 #pragma once
 
 #include "Victoria/Renderer/GraphicsContext.h"
-#include <glad/glad.h>
 
 struct GLFWwindow;
 
 namespace Victoria
 {
-    class OpenGLContext
+	class OpenGLContext : public GraphicsContext
     {
     public:
         OpenGLContext(GLFWwindow *windowHandle);
 
-		virtual void Init() ;
-		virtual void SwapBuffers() ;
+		virtual void Init() override;
+		virtual void SwapBuffers() override;
 
     private:
         GLFWwindow *m_WindowHandle;

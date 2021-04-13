@@ -8,7 +8,6 @@ extern Victoria::Application *Victoria::CreateApplication();
 int main(int argc, char **argv)
 {
 	Victoria::Log::Init();
-	VC_CORE_INFO("Hello Victoria!!");
 
 	VC_PROFILE_BEGIN_SESSION("Startup", "VictoriaProfile-Startup.json");
 	auto app = Victoria::CreateApplication();

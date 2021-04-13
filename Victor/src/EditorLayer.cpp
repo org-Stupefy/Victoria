@@ -3,9 +3,8 @@
 
 namespace Victoria
 {
-
 	EditorLayer::EditorLayer()
-		:Layer("Editor Layer")
+		:Layer("Editor Layer"), m_CameraController(1280.0f / 720.0f), m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
 	{
 
 	}
@@ -13,6 +12,12 @@ namespace Victoria
 	void EditorLayer::OnAttach()
 	{
 		VC_PROFILE_FUNCTION();
+
+		FrameBufferSpecification fbSpec;
+		fbSpec.Attachments = { FrameBufferTextureFormat::RGBA8, FrameBufferTextureFormat::Depth };
+		fbSpec.Width = 1280;
+		fbSpec.Height = 720;
+		m_Framebuffer = FrameBuffer::Create(fbSpec);
 	}
 
 
@@ -25,6 +30,32 @@ namespace Victoria
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
 		VC_PROFILE_FUNCTION();
+
+		if (FrameBufferSpecification spec = m_Framebuffer->GetSpecification();
+			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
+			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
+		{
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+			/*m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);*/
+		}
+
+		// Update
+		if (m_ViewportFocused)
+			m_CameraController.OnUpdate(ts);
+
+		/*m_EditorCamera.OnUpdate(ts);*/
+
+		// Render
+		m_Framebuffer->Bind();
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		RenderCommand::Clear();
+
+		// Update scene
+		//m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+
+		m_Framebuffer->Unbind();
 	}
 
 
@@ -118,6 +149,21 @@ namespace Victoria
 			ImGui::EndMenuBar();
 		}
 
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+		ImGui::Begin("Viewport");
+
+		m_ViewportFocused = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+
+		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		
+		ImGui::End();
+		ImGui::PopStyleVar();
 
 		ImGui::End();
 	}
@@ -127,10 +173,12 @@ namespace Victoria
 	{
 		VC_PROFILE_FUNCTION();
 
+		m_CameraController.OnEvent(event);
+		/*m_EditorCamera.OnEvent(e);*/
+
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(VC_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 	}
-
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& event)
 	{
@@ -182,7 +230,6 @@ namespace Victoria
 	{
 		VC_PROFILE_FUNCTION();
 	}
-
 
 	void EditorLayer::SaveSceneAs()
 	{

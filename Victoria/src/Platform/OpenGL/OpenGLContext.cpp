@@ -2,10 +2,10 @@
 
 #include "Platform/OpenGL/OpenGLContext.h"
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 namespace Victoria
 {
-
 	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle)
 		: m_WindowHandle(windowHandle)
 	{

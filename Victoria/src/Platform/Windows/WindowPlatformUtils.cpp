@@ -1,5 +1,5 @@
 #include "vcpch.h"
-#include "Victoria/Utilities/PlatformUtils.h"
+#include "Victoria/Utility/PlatformUtils.h"
 
 #include <commdlg.h>
 #include <GLFW/glfw3.h>

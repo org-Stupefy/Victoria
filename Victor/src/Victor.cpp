@@ -1,6 +1,5 @@
+#define VICTORIA_ENTRYPOINT
 #include <Victoria.h>
-#include "Victoria/Core/EntryPoint.h"
-
 #include "EditorLayer.h"
 
 namespace Victoria
