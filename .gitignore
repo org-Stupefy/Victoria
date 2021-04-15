@@ -6,9 +6,12 @@ bin-int/
 # Victoria files
 *.log
 *.json
+*.vic
 
 # Visual Studio files and folder
 .vs/
+.vscode/
+.VSCodeCounter/
 **.sln
 **.vcxproj
 **.vcxproj.filters

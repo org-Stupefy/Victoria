@@ -14,7 +14,7 @@ namespace Victoria
 
 		void SetContext(const Ref<Scene>& scene);
 
-		void OnImGuiRender();
+		void OnImGuiRender(bool* show);
 
 		Entity GetSelectedEntity() const { return m_SelectionContext; }
 	private:

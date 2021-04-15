@@ -25,9 +25,9 @@ namespace Victoria
 		m_SelectionContext = {};
 	}
 
-	void ScenePanel::OnImGuiRender()
+	void ScenePanel::OnImGuiRender(bool* show)
 	{
-		ImGui::Begin("Scene Hierarchy");
+		ImGui::Begin("Hierarchy",show);
 
 		m_Context->m_Registry.each([&](auto entityID)
 			{
