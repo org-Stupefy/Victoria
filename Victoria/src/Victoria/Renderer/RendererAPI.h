@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Victoria/Core/Base.h"
 #include "Victoria/Renderer/VertexArray.h"
 #include <glm/glm.hpp>
 

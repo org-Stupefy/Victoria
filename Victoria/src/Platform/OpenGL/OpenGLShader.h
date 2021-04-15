@@ -28,6 +28,7 @@ namespace Victoria
 		void SetMat2(const std::string& name, const glm::mat2& mat) const override;
 		void SetMat3(const std::string& name, const glm::mat3& mat) const override;
 		void SetMat4(const std::string& name, const glm::mat4& mat) const override;
+		void UploadUniformIntArray(const std::string& name, int* values, uint32_t count) override;
 
 		uint32_t GetRendererID()
 		{

@@ -41,5 +41,31 @@ namespace Victoria
 		void Reset() { Translation = { 0.0f, 0.0f, 0.0f }; Rotation = { 0.0f, 0.0f, 0.0f }; Scale = { 1.0f, 1.0f, 1.0f }; }
 	};
 
+	struct CameraComponent
+	{
+		SceneCamera Camera;
+		bool Primary = true; // TODO: think about moving to Scene
+		bool FixedAspectRatio = false;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+
+		void Reset()
+		{
+			Primary = true;
+			FixedAspectRatio = false;
+		}
+	};
+
+	struct SpriteRendererComponent
+	{
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+
+		SpriteRendererComponent() = default;
+		SpriteRendererComponent(const SpriteRendererComponent&) = default;
+		SpriteRendererComponent(const glm::vec4& color)
+			: Color(color) {}
+	};
+
 
 }

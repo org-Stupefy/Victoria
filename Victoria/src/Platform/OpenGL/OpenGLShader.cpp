@@ -241,4 +241,9 @@ namespace Victoria
 		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 	}
 
+	void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t count)
+	{
+		glUniform1iv(glGetUniformLocation(m_RendererID, name.c_str()), count, values);
+	}
+
 } 

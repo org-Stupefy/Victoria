@@ -2,7 +2,6 @@
 
 #include "Victoria/Renderer/RenderCommand.h"
 
-#include "Victoria/Core/Base.h"
 #include "Victoria/Renderer/Shader.h"
 #include "Victoria/Renderer/OrthographicCamera.h"
 

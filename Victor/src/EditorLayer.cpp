@@ -1,6 +1,15 @@
 #include "EditorLayer.h"
 #include <imgui/imgui.h>
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include "Victoria/Scene/SceneSerializer.h"
+
+#include "Victoria/Utility/PlatformUtils.h"
+
+#include "ImGuizmo.h"
+
 namespace Victoria
 {
 	EditorLayer::EditorLayer()
@@ -13,13 +22,21 @@ namespace Victoria
 	{
 		VC_PROFILE_FUNCTION();
 
+		m_CheckerboardTexture = Texture2D::Create("assets/textures/Checkerboard.png");
+
 		FrameBufferSpecification fbSpec;
 		fbSpec.Attachments = { FrameBufferTextureFormat::RGBA8, FrameBufferTextureFormat::Depth };
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 		m_Framebuffer = FrameBuffer::Create(fbSpec);
-	}
 
+		m_ActiveScene = CreateRef<Scene>();
+
+		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+
+		m_ScenePanel.SetContext(m_ActiveScene);
+
+	}
 
 	void EditorLayer::OnDetach()
 	{
@@ -37,23 +54,24 @@ namespace Victoria
 		{
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
-			/*m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
-			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);*/
+			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
 		// Update
 		if (m_ViewportFocused)
 			m_CameraController.OnUpdate(ts);
 
-		/*m_EditorCamera.OnUpdate(ts);*/
+		m_EditorCamera.OnUpdate(ts);
 
 		// Render
+		Renderer2D::ResetStats();
 		m_Framebuffer->Bind();
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::Clear();
 
 		// Update scene
-		//m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 
 		m_Framebuffer->Unbind();
 	}
@@ -149,6 +167,8 @@ namespace Victoria
 			ImGui::EndMenuBar();
 		}
 
+		m_ScenePanel.OnImGuiRender();
+
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
 
@@ -161,79 +181,163 @@ namespace Victoria
 
 		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-		
+
+		// Gizmos
+		Entity selectedEntity = m_ScenePanel.GetSelectedEntity();
+		if (selectedEntity && m_GizmoType != -1)
+		{
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
+
+			float windowWidth = (float)ImGui::GetWindowWidth();
+			float windowHeight = (float)ImGui::GetWindowHeight();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+			// Camera
+
+			// Runtime camera from entity
+			// auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+			// const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+			// const glm::mat4& cameraProjection = camera.GetProjection();
+			// glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+			// Editor camera
+			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
+			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
+
+			// Entity transform
+			auto& tc = selectedEntity.GetComponent<TransformComponent>();
+			glm::mat4 transform = tc.GetTransform();
+
+			// Snapping
+			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			float snapValue = 0.5f; // Snap to 0.5m for translation/scale
+			// Snap to 45 degrees for rotation
+			if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+				snapValue = 45.0f;
+
+			float snapValues[3] = { snapValue, snapValue, snapValue };
+
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+				nullptr, snap ? snapValues : nullptr);
+
+			if (ImGuizmo::IsUsing())
+			{
+				glm::vec3 translation, rotation, scale;
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+
+				glm::vec3 deltaRotation = rotation - tc.Rotation;
+				tc.Translation = translation;
+				tc.Rotation += deltaRotation;
+				tc.Scale = scale;
+			}
+		}
+
 		ImGui::End();
 		ImGui::PopStyleVar();
 
 		ImGui::End();
 	}
 
-
-	void EditorLayer::OnEvent(Event& event)
+	void EditorLayer::OnEvent(Event& e)
 	{
-		VC_PROFILE_FUNCTION();
+		m_CameraController.OnEvent(e);
+		m_EditorCamera.OnEvent(e);
 
-		m_CameraController.OnEvent(event);
-		/*m_EditorCamera.OnEvent(e);*/
-
-		EventDispatcher dispatcher(event);
+		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(VC_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 	}
 
-	bool EditorLayer::OnKeyPressed(KeyPressedEvent& event)
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
 	{
-		VC_PROFILE_FUNCTION();
-		
-		if (event.GetRepeatCount() > 0)
-		{
+		// Shortcuts
+		if (e.GetRepeatCount() > 0)
 			return false;
-		}
 
 		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
 		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 
-		//switch (event.GetKeyCode())
-		//{
-		//case Key::N:
-		//{
-		//	if (control)
-		//		NewScene();
+		switch (e.GetKeyCode())
+		{
+		case Key::N:
+		{
+			if (control)
+				NewScene();
 
-		//	break;
-		//}
-		//case Key::O:
-		//{
-		//	if (control)
-		//		OpenScene();
+			break;
+		}
+		case Key::O:
+		{
+			if (control)
+				OpenScene();
 
-		//	break;
-		//}
-		//case Key::S:
-		//{
-		//	if (control && shift)
-		//		SaveSceneAs();
+			break;
+		}
+		case Key::S:
+		{
+			if (control && shift)
+				SaveSceneAs();
 
-		//	break;
-		//}
+			break;
+		}
 
-		//return true;
+		// Gizmos
+		case Key::Q:
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = -1;
+			break;
+		}
+		case Key::W:
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		}
+		case Key::E:
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		}
+		case Key::R:
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			break;
+		}
+		}
 	}
-
 
 	void EditorLayer::NewScene()
 	{
-		VC_PROFILE_FUNCTION();
+		m_ActiveScene = CreateRef<Scene>();
+		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_ScenePanel.SetContext(m_ActiveScene);
 	}
-
 
 	void EditorLayer::OpenScene()
 	{
-		VC_PROFILE_FUNCTION();
+		std::optional<std::string> filepath = FileHandling::OpenFile("Victoria Scene (*.vic)\0*.vic\0");
+		if (filepath)
+		{
+			m_ActiveScene = CreateRef<Scene>();
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_ScenePanel.SetContext(m_ActiveScene);
+
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.DeserializeText(*filepath);
+		}
 	}
 
 	void EditorLayer::SaveSceneAs()
 	{
-		VC_PROFILE_FUNCTION();
+		std::optional<std::string> filepath = FileHandling::SaveFile("Victoria Scene (*.vic)\0*.vic\0");
+		if (filepath)
+		{
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.SerializeText(*filepath);
+		}
 	}
-
 }

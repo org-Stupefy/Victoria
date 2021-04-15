@@ -2,6 +2,7 @@
 
 #include <Victoria.h>
 #include "Panels/ScenePanel.h"
+#include "Victoria/Renderer/EditorCamera.h"	
 
 namespace Victoria
 {
@@ -31,14 +32,14 @@ namespace Victoria
 		Ref<Shader> m_FlatColorShader;
 		Ref<FrameBuffer> m_Framebuffer;
 
-		/*Ref<Scene> m_ActiveScene;
+		Ref<Scene> m_ActiveScene;
 		Entity m_SquareEntity;
 		Entity m_CameraEntity;
-		Entity m_SecondCamera;*/
+		Entity m_SecondCamera;
 
 		bool m_PrimaryCamera = true;
 
-		//EditorCamera m_EditorCamera;
+		EditorCamera m_EditorCamera;
 
 		Ref<Texture2D> m_CheckerboardTexture;
 
@@ -50,6 +51,6 @@ namespace Victoria
 		int m_GizmoType = -1;
 
 		// Panels
-		/*SceneHierarchyPanel m_SceneHierarchyPanel;*/
+		ScenePanel m_ScenePanel;
 	};
 }

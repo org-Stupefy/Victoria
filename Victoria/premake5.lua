@@ -51,7 +51,7 @@ project "Victoria"
 		"ImGui",
 		"yaml-cpp",
 		"opengl32.lib",
-		"$(VULKAN_SDK)/lib/vulkan-1.lib"
+		-- "$(VULKAN_SDK)/lib/vulkan-1.lib"
 	}
 
 	filter "files:thirdparty/ImGuizmo/**.cpp"

@@ -32,6 +32,7 @@
 #include "Victoria/Math/Cone.h"
 #include "Victoria/Math/Sphere.h"
 #include "Victoria/Math/Torus.h"
+#include "Victoria/Math/Math.h"
 
 // ---Renderer------------------------
 #include "Victoria/Renderer/Buffer.h"
@@ -44,6 +45,7 @@
 #include "Victoria/Renderer/PerspectiveCamera.h"
 #include "Victoria/Renderer/RenderCommand.h"
 #include "Victoria/Renderer/Renderer.h"
+#include "Victoria/Renderer/Renderer2D.h"
 #include "Victoria/Renderer/RendererAPI.h"
 #include "Victoria/Renderer/Shader.h"
 #include "Victoria/Renderer/Texture.h"
@@ -52,7 +54,7 @@
 // ---Scene------------------------
 #include "Victoria/Scene/Components.h"
 #include "Victoria/Scene/Entity.h"
-#include "Victoria/Scene/Scene.h""
+#include "Victoria/Scene/Scene.h"
 #include "Victoria/Scene/SceneCamera.h"
 
 // -----------------------------------
