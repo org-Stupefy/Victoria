@@ -2,11 +2,14 @@
 **/bin/
 !thirdparty/premake/bin/
 bin-int/
+build/
+build.zip
 
 # Victoria files
 *.log
 *.json
 *.vic
+*.ini
 
 # Visual Studio files and folder
 .vs/
@@ -19,3 +22,6 @@ bin-int/
 
 # Project Generation
 Makefile
+
+#Temporary
+Victoria/thirdparty/assimp/

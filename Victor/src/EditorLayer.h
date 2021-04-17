@@ -27,7 +27,9 @@ namespace Victoria
 		void SaveScene();
 		void RenderPanels();
 		void RenderGizmos();
-		void UpdateWindowTitle(const std::string& sceneName);
+		void EntryPopUp();
+		void AboutPopUp();
+		
 	private:
 		Victoria::OrthographicCameraController m_CameraController;
 
@@ -58,5 +60,7 @@ namespace Victoria
 		ScenePanel m_ScenePanel;
 		//Panel Bools
 		bool m_ShowScenePanel = true;
+		bool m_ShowPropertiesPanel = true;
+		bool m_AboutPopUp = false;
 	};
 }

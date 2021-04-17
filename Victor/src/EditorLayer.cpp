@@ -79,12 +79,14 @@ namespace Victoria
 		VC_PROFILE_FUNCTION();
 
 		UI::BeginDockspace();
+				//ImGui::ShowDemoWindow();
 		if (ImGui::BeginMenuBar())
 		{
 			if (ImGui::BeginMenu("Logo"))
 			{
 				if (ImGui::MenuItem("About"))
-					SaveSceneAs(); //TODO:
+					m_AboutPopUp = true;
+					AboutPopUp();
 
 				ImGui::EndMenu();
 			}
@@ -118,6 +120,17 @@ namespace Victoria
 			{
 				if (ImGui::MenuItem("Preferences"))
 					SaveSceneAs();//TODO:
+
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("View"))
+			{
+				if(ImGui::MenuItem("Scene Hierarchy"))
+					m_ShowScenePanel = true;
+
+				if(ImGui::MenuItem("Properties"))
+					m_ShowPropertiesPanel = true;
 
 				ImGui::EndMenu();
 			}
@@ -211,6 +224,45 @@ namespace Victoria
 				tc.Rotation += deltaRotation;
 				tc.Scale = scale;
 			}
+
+			//ImGuizmo::ViewManipulate(glm::value_ptr(cameraView), { 2.0f },)
+		}
+
+	}
+
+	void EditorLayer::EntryPopUp()
+	{
+
+	}
+
+	void EditorLayer::AboutPopUp()
+	{
+		if(m_AboutPopUp)
+		{
+			ImGui::OpenPopup("About");
+		}
+		if (ImGui::BeginPopupModal("About", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
+			ImGui::Separator();
+
+
+			static bool dont_ask_me_next_time = false;
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+			ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
+			ImGui::PopStyleVar();
+
+			if (ImGui::Button("OK", ImVec2(120, 0))) { m_AboutPopUp = false; ImGui::CloseCurrentPopup(); }
+			ImGui::SetItemDefaultFocus();
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+			ImGui::EndPopup();
+			/*ImGui::OpenPopup("Test");
+			if (ImGui::BeginPopup("Test"))
+			{
+				ImGui::Text("Aquarium");
+				ImGui::EndPopup();
+			}*/
 		}
 	}
 
