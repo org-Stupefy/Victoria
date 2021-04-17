@@ -16,6 +16,7 @@ namespace Victoria
 		virtual void Bind() const override;
 		virtual void UnBind() const override;
 
+		uint32_t GetRendererID() const override { return m_RendererID; }
 		void SetBool(const std::string& name, bool value) const override;
 		void SetInt(const std::string& name, int value) const override;
 		void SetFloat(const std::string& name, float value) const override;

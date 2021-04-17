@@ -5,7 +5,6 @@
 #include "Victoria/Scene/Entity.h"
 
 #include "Victoria/Renderer/Renderer2D.h"
-
 #include <glm/glm.hpp>
 
 namespace Victoria
@@ -39,7 +38,9 @@ namespace Victoria
 	{
 		// Render 2D
 		Camera* mainCamera = nullptr;
+		TransformComponent cameraTransformComponent;
 		glm::mat4 cameraTransform;
+
 		{
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
@@ -50,6 +51,7 @@ namespace Victoria
 				{
 					mainCamera = &camera.Camera;
 					cameraTransform = transform.GetTransform();
+					cameraTransformComponent = transform;
 					break;
 				}
 			}
@@ -57,17 +59,20 @@ namespace Victoria
 
 		if (mainCamera)
 		{
-			Renderer2D::BeginScene(*mainCamera, cameraTransform);
-
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group)
 			{
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				Renderer2D::BeginScene(*mainCamera, cameraTransform);
+				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+				for (auto entity : group)
+				{
+					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+					if (sprite.Texture)
+						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Texture, sprite.TilingFactor, sprite.Color);
+					else
+						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+				}
 
-				Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+				Renderer2D::EndScene();
 			}
-
-			Renderer2D::EndScene();
 		}
 
 	}
@@ -121,24 +126,14 @@ namespace Victoria
 		static_assert(false);
 	}
 
-	template<>
-	void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
-	{
-	}
+#define ON_COMPONENT_ADDED(x)  template<> void Scene::OnComponentAdded<x>(Entity entity, x& component){}
 
+	ON_COMPONENT_ADDED(TransformComponent)
+	ON_COMPONENT_ADDED(SpriteRendererComponent)
+	ON_COMPONENT_ADDED(TagComponent)
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
 	{
 		component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
-	}
-
-	template<>
-	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
-	{
-	}
-
-	template<>
-	void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component)
-	{
 	}
 }

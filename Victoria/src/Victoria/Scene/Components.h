@@ -8,8 +8,18 @@
 
 #include "Victoria/Scene/SceneCamera.h"
 
+//#include "Victoria/Renderer/Mesh.h"
+#include "Victoria/Renderer/Texture.h"
+
+#include "Victoria/Core/UUID.h"
+
 namespace Victoria
 {
+	struct UUIDCcomponent
+	{
+		UUID ID = 0;
+	};
+
 	struct TagComponent
 	{
 		std::string Tag;
@@ -60,12 +70,40 @@ namespace Victoria
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		Ref<Texture2D> Texture = nullptr;
+		std::string TextureFilepath;
+		float TilingFactor = 1.0f;
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color)
 			: Color(color) {}
+
+		/*void SetTexture(const std::string& filepath)
+		{
+			Texture = Texture2D::Create(filepath);
+			Renderer::Submit<Texture2D>(Texture);
+			TextureFilepath = filepath;
+		}
+
+		void RemoveTexture() { Texture = nullptr; TextureFilepath = ""; }
+
+		void Reset()
+		{
+			Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			RemoveTexture();
+		}*/
 	};
 
+	/*struct MeshComponent
+	{
+		Ref<Victoria::Mesh> Mesh;
+		std::string MeshFilepath;
 
+		MeshComponent() = default;
+		MeshComponent(const MeshComponent&) = default;
+
+		void SetFilePath(std::string& path) { MeshFilepath = path; }
+		void Reset() { Mesh = nullptr; MeshFilepath.clear(); }
+	};*/
 }

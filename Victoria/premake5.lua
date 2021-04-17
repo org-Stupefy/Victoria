@@ -18,6 +18,8 @@ project "Victoria"
 		"thirdparty/stb_image/**.cpp",
 		"thirdparty/glm/glm/**.hpp",
 		"thirdparty/glm/glm/**.inl",
+		"thirdparty/assimp/include/**.h",
+		"thirdparty/assimp/include/**.cpp",
 
 		"thirdparty/ImGuizmo/ImGuizmo.h",
 		"thirdparty/ImGuizmo/ImGuizmo.cpp"
@@ -41,6 +43,7 @@ project "Victoria"
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.assimp}",
 		"$(VULKAN_SDK)/include"
 	}
 
@@ -51,11 +54,16 @@ project "Victoria"
 		"ImGui",
 		"yaml-cpp",
 		"opengl32.lib",
-		-- "$(VULKAN_SDK)/lib/vulkan-1.lib"
+		-- "assimp",
+		"../Victoria/thirdparty/assimp/lib/assimp-vc142-mt.lib",
+		"$(VULKAN_SDK)/lib/vulkan-1.lib"
 	}
 
-	filter "files:thirdparty/ImGuizmo/**.cpp"
-	flags { "NoPCH" }
+	filter {}
+		files {	"thirdparty/ImGuizmo/**.cpp",
+				-- "thirdparty/assimp/include/**.cpp"
+			}	
+		flags { "NoPCH" }
 
 	filter "system:windows"
 		systemversion "latest"
