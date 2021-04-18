@@ -79,7 +79,7 @@ namespace Victoria
 		VC_PROFILE_FUNCTION();
 
 		UI::BeginDockspace();
-				//ImGui::ShowDemoWindow();
+				ImGui::ShowDemoWindow();
 		if (ImGui::BeginMenuBar())
 		{
 			if (ImGui::BeginMenu("Logo"))

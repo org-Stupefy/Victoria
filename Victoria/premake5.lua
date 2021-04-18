@@ -44,7 +44,7 @@ project "Victoria"
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.assimp}",
-		"$(VULKAN_SDK)/include"
+		--"$(VULKAN_SDK)/include"
 	}
 
 	links
@@ -56,7 +56,7 @@ project "Victoria"
 		"opengl32.lib",
 		-- "assimp",
 		"../Victoria/thirdparty/assimp/lib/assimp-vc142-mt.lib",
-		"$(VULKAN_SDK)/lib/vulkan-1.lib"
+		--"$(VULKAN_SDK)/lib/vulkan-1.lib"
 	}
 
 	filter {}

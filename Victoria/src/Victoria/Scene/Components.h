@@ -8,7 +8,7 @@
 
 #include "Victoria/Scene/SceneCamera.h"
 
-//#include "Victoria/Renderer/Mesh.h"
+#include "Victoria/Renderer/Mesh.h"
 #include "Victoria/Renderer/Texture.h"
 
 #include "Victoria/Core/UUID.h"
@@ -95,7 +95,7 @@ namespace Victoria
 		}*/
 	};
 
-	/*struct MeshComponent
+	struct MeshComponent
 	{
 		Ref<Victoria::Mesh> Mesh;
 		std::string MeshFilepath;
@@ -105,5 +105,5 @@ namespace Victoria
 
 		void SetFilePath(std::string& path) { MeshFilepath = path; }
 		void Reset() { Mesh = nullptr; MeshFilepath.clear(); }
-	};*/
+	};
 }

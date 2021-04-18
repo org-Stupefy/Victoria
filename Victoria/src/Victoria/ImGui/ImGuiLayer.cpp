@@ -41,6 +41,8 @@ namespace Victoria
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
 		//ImGui::StyleColorsClassic();
+		float size = 17.0f;
+		io.Fonts->AddFontFromFileTTF("assets//fonts//Montserrat//Montserrat-Medium.ttf",size);
 
 		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 		ImGuiStyle& style = ImGui::GetStyle();
