@@ -1,33 +1,33 @@
-name: Linux-build
+# name: Linux-build
 
-on:
-  push: {}
-  pull_request: {}
+# on:
+#   push: {}
+#   pull_request: {}
 
-jobs:
-  Linux:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-          submodules: true
+# jobs:
+#   Linux:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 1
+#           submodules: true
 
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt install build-essential
-          sudo apt install mingw-w64
-          sudo apt install gcc g++ make -y
-          sudo apt install libxcursor-dev -y
-          sudo apt-get install libx11-dev -y
-          sudo apt-get install libxi-dev -y
-          sudo apt-get install libxrandr-dev -y
-          sudo apt-get install libxinerama1 libxinerama-dev -y
+#       - name: Install Dependencies
+#         run: |
+#           sudo apt-get update
+#           sudo apt install build-essential
+#           sudo apt install mingw-w64
+#           sudo apt install gcc g++ make -y
+#           sudo apt install libxcursor-dev -y
+#           sudo apt-get install libx11-dev -y
+#           sudo apt-get install libxi-dev -y
+#           sudo apt-get install libxrandr-dev -y
+#           sudo apt-get install libxinerama1 libxinerama-dev -y
 
-      - name: Generating Dependencies
-        run: |
-          sh ./scripts/Linux-GenProjects.sh
+#       - name: Generating Dependencies
+#         run: |
+#           sh ./scripts/Linux-GenProjects.sh
 
       # - name: Building Glad
       #   run: '"%MSBUILD_PATH%\MSBuild.exe" Victoria/thirdparty/Glad/Glad.vcxproj /p:Platform=x64 /p:Configuration=Release'
