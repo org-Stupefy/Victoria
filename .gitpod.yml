@@ -1,0 +1,5 @@
+tasks:
+  - command: >
+      cd scripts &&
+      call Win-GenProjects.bat &&
+      call Win-Build.bat
