@@ -13,4 +13,7 @@ Start by cloning the repository with `git clone --recursive https://github.com/o
 If the repository was cloned non-recursively previously, use `git submodule update --init` to clone the necessary submodules.
 
 You can view the project status here [Status](/Resources/Branding/results.md)
+
 ![build](https://github.com/org-Stupefy/Victoria/workflows/build/badge.svg)
+
+[![codecov](https://codecov.io/gh/org-Stupefy/Victoria/branch/master/graph/badge.svg?token=UIDG93VQI3)](https://codecov.io/gh/org-Stupefy/Victoria)

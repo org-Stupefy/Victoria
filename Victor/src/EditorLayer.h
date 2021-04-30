@@ -20,6 +20,7 @@ namespace Victoria
 		void OnEvent(Event& e) override;
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 
 		void NewScene();
 		void OpenScene();
@@ -45,6 +46,8 @@ namespace Victoria
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
 
+		Entity m_HoveredEntity;
+
 		bool m_PrimaryCamera = true;
 		EditorCamera m_EditorCamera;
 
@@ -53,6 +56,7 @@ namespace Victoria
 		std::string m_ActiveFilepath = std::string();
 		
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+		glm::vec2 m_ViewportBounds[2];
 		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 		glm::vec4 m_ClearColor = { 0.141f,0.145f,0.192f,1.0f };
 		

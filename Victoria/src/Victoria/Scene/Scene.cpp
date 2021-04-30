@@ -38,9 +38,7 @@ namespace Victoria
 	{
 		// Render 2D
 		Camera* mainCamera = nullptr;
-		TransformComponent cameraTransformComponent;
 		glm::mat4 cameraTransform;
-
 		{
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
@@ -51,7 +49,6 @@ namespace Victoria
 				{
 					mainCamera = &camera.Camera;
 					cameraTransform = transform.GetTransform();
-					cameraTransformComponent = transform;
 					break;
 				}
 			}
@@ -59,20 +56,17 @@ namespace Victoria
 
 		if (mainCamera)
 		{
-			{
-				Renderer2D::BeginScene(*mainCamera, cameraTransform);
-				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-				for (auto entity : group)
-				{
-					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-					if (sprite.Texture)
-						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Texture, sprite.TilingFactor, sprite.Color);
-					else
-						Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
-				}
+			Renderer2D::BeginScene(*mainCamera, cameraTransform);
 
-				Renderer2D::EndScene();
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group)
+			{
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
+
+			Renderer2D::EndScene();
 		}
 
 	}
