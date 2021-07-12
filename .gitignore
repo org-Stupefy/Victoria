@@ -10,6 +10,7 @@ build.zip
 *.json
 *.vic
 *.ini
+Victoria/thirdparty/VulkanSDK
 
 # Visual Studio files and folder
 .vs/
@@ -22,6 +23,11 @@ build.zip
 
 # Project Generation
 Makefile
+scripts/__pycache__ 
 
 #Temporary
 Victoria/thirdparty/assimp/
+
+#Games
+MineTime/
+BoostRocket/
