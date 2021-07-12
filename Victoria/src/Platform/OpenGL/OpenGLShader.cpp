@@ -4,17 +4,33 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "glad/glad.h"
 
+#include <shaderc/shaderc.h>
+
 namespace Victoria
 {
-	static uint32_t ShaderTypeFromString(const std::string& shader)
+	namespace Utils
 	{
-		if (shader == "VERTEX")
-			return GL_VERTEX_SHADER;
-		if (shader == "FRAGMENT" || shader == "PIXEL")
-			return GL_FRAGMENT_SHADER;
+		static uint32_t ShaderTypeFromString(const std::string& shader)
+		{
+			if (shader == "VERTEX")
+				return GL_VERTEX_SHADER;
+			if (shader == "FRAGMENT" || shader == "PIXEL")
+				return GL_FRAGMENT_SHADER;
 
-		VC_CORE_ASSERT(false, "Unknown shader type!");
-		return 0;
+			VC_CORE_ASSERT(false, "Unknown shader type!");
+			return 0;
+		}
+
+		static shaderc_shader_kind GLShaderStageToShaderC(GLenum stage)
+		{
+			switch (stage)
+			{
+				case GL_VERTEX_SHADER: return shaderc_vertex_shader;
+				case GL_FRAGMENT_SHADER: return shaderc_fragment_shader;
+			}
+			VC_CORE_ASSERT(false);
+			return (shaderc_shader_kind)0;
+		}
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& filepath)
@@ -80,13 +96,13 @@ namespace Victoria
 			VC_CORE_ASSERT(eol != std::string::npos, "Syntax error");
 			size_t begin = pos + typeTokenLength + 1; //Start of shader type name (after "#shader " keyword)
 			std::string shader = source.substr(begin, eol - begin);
-			VC_CORE_ASSERT(ShaderTypeFromString(shader), "Invalid shader type specified");
+			VC_CORE_ASSERT(Utils::ShaderTypeFromString(shader), "Invalid shader type specified");
 
 			size_t nextLinePos = source.find_first_not_of("\r\n", eol); //Start of shader code after shader type declaration line
 			VC_CORE_ASSERT(nextLinePos != std::string::npos, "Syntax error");
 			pos = source.find(typeToken, nextLinePos); //Start of next shader type declaration line
 
-			shaderSources[ShaderTypeFromString(shader)] = (pos == std::string::npos) ? source.substr(nextLinePos) : source.substr(nextLinePos, pos - nextLinePos);
+			shaderSources[Utils::ShaderTypeFromString(shader)] = (pos == std::string::npos) ? source.substr(nextLinePos) : source.substr(nextLinePos, pos - nextLinePos);
 		}
 
 		return shaderSources;
@@ -165,6 +181,25 @@ namespace Victoria
 			glDeleteShader(id);
 		}
 	}
+
+	//void OpenGLShader::CompileOrGetVulkanBinaries(std::unordered_map<uint32_t, std::string>& shaderSources)
+	//{
+	//	shaderc::Compiler compiler;
+	//	shaderc::CompileOptions options;
+	//	options.SetTargetEnvironment(shaderc_target_env_vulkan, shaderc_env_version_vulkan_1_2);
+	//	
+	//	const bool optimize = false;
+	//	if (optimize)
+	//	{
+	//		options.SetOptimizationLevel(shaderc_optimization_level_performance); 
+	//	}
+
+	//	for (auto&& [stage, source] : shaderSources)
+	//	{
+	//		shaderc::SpvCompilationResult module = compiler.CompileGlslToSpv(source, Utils::GLShaderStageToShaderC(stage),m_Name,c_str(),options)
+	//	}
+
+	//}
 
 	OpenGLShader::~OpenGLShader()
 	{

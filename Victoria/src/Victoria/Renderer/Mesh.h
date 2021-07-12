@@ -25,7 +25,6 @@ namespace Victoria
 		Mesh(const std::string& filepath);
 		Mesh(const std::vector<Vertices>& vertices, const std::vector<uint32_t>& indices, const glm::mat4& transform);
 
-
 		const std::vector<Vertices>& GetVertices() { return m_Vertices; }
 		const std::vector<uint32_t>& GetIndices() { return m_Indices; }
 		Ref<Shader>& GetShader() { return m_Shader; }

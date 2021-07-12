@@ -2,7 +2,7 @@ project "Victoria"
 	kind "StaticLib"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -44,7 +44,7 @@ project "Victoria"
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.assimp}",
-		--"$(VULKAN_SDK)/include"
+		"%{IncludeDir.VulkanSDK}"
 	}
 
 	links
@@ -55,12 +55,12 @@ project "Victoria"
 		"yaml-cpp",
 		"opengl32.lib",
 		-- "assimp",
-		"../Victoria/thirdparty/assimp/lib/assimp-vc142-mt.lib",
-		--"$(VULKAN_SDK)/lib/vulkan-1.lib"
+		"../Victoria/thirdparty/assimp/lib/assimp-vc142-mt.lib"
 	}
 
 	filter {}
-		files {	"thirdparty/ImGuizmo/**.cpp",
+		files {	
+				"thirdparty/ImGuizmo/**.cpp",
 				-- "thirdparty/assimp/include/**.cpp"
 			}	
 		flags { "NoPCH" }
@@ -77,12 +77,33 @@ project "Victoria"
 		runtime "Debug"
 		symbols "on"
 
+		-- links
+		-- {
+		-- 	"%{Library.ShaderC_Debug}",
+		-- 	"%{Library.SPIRV_Cross_Debug}",
+		-- 	"%{Library.SPIRV_Cross_GLSL_Debug}"
+		-- }
+
 	filter "configurations:Release"
 		defines "VC_RELEASE"
 		runtime "Release"
 		optimize "on"
 
+		-- links
+		-- {
+		-- 	"%{Library.ShaderC_Release}",
+		-- 	"%{Library.SPIRV_Cross_Release}",
+		-- 	"%{Library.SPIRV_Cross_GLSL_Release}"
+		-- }
+
 	filter "configurations:Dist"
 		defines "VC_DIST"
 		runtime "Release"
 		optimize "on"
+
+		-- links
+		-- {
+		-- 	"%{Library.ShaderC_Release}",
+		-- 	"%{Library.SPIRV_Cross_Release}",
+		-- 	"%{Library.SPIRV_Cross_GLSL_Release}"
+		-- }

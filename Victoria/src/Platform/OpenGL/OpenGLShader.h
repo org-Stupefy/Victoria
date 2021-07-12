@@ -42,6 +42,7 @@ namespace Victoria
 		std::string ReadFile(const std::string& filepath);
 		std::unordered_map<uint32_t, std::string> Process(const std::string& source);
 		void Compile(std::unordered_map<uint32_t, std::string>& shaderSources);
+		void CompileOrGetVulkanBinaries(std::unordered_map<uint32_t, std::string>& shaderSources);
 
 	private:
 		uint32_t m_RendererID;
